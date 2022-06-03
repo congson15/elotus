@@ -1,0 +1,3 @@
+input:checked ~ .radio {
+    @apply text-red-500 bg-black;
+}
