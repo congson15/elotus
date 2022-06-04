@@ -7,6 +7,7 @@ import CardSkeleton from "../../components/Skeleton";
 import { MovieService } from "../../services/Movie";
 import "./_index.scss";
 import { OutlineButton } from "../../components/Button/Button";
+import $ from "jquery";
 
 const movieTypeList = [
   {
@@ -26,10 +27,17 @@ const HomePage = () => {
   const [movieType, setMovieType] = React.useState("now_playing");
   const [totalPage, setTotalPage] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [ isReload, setIsReload ] = React.useState(false);
+
+  React.useEffect(() => {
+    setLoading(true);
+    getMovies(movieType);
+  },[isReload])
 
   const getMovies = async (type: string) => {
     setLoading(true);
     const params = { pages: 1 };
+
     try {
       const response: any = await MovieService.getMovieList(type, params);
       if (response.results) {
@@ -45,19 +53,19 @@ const HomePage = () => {
 
   const handleLoadMore = async () => {
     try {
-        const params ={
-            page: currentPage+1
-        }
-        let response:any = await MovieService.getMovieList(movieType, params);
-        if(response.results){
-            const results : never[] = response.results;
-            setMovies([...movies, ...results]);
-            setCurrentPage(currentPage+1);
-        }
+      const params = {
+        page: currentPage + 1,
+      };
+      let response: any = await MovieService.getMovieList(movieType, params);
+      if (response.results) {
+        const results: never[] = response.results;
+        setMovies([...movies, ...results]);
+        setCurrentPage(currentPage + 1);
+      }
     } catch (error) {
       alert("Something went wrong");
     }
-  }
+  };
 
   const handleTabChange = (type: string) => {
     if (type === movieType) {
@@ -67,13 +75,29 @@ const HomePage = () => {
     setMovieType(type);
   };
 
+
+
   React.useEffect(() => {
     getMovies("now_playing");
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center space-x-2 animate-pulse h-screen">
+        <div className="w-8 h-8 bg-red-500 rounded-full animate-bounce"></div>
+        <div className="w-8 h-8 bg-red-500 rounded-full animate-bounce"></div>
+        <div className="w-8 h-8 bg-red-500 rounded-full animate-bounce"></div>
+      </div>
+    );
+  }
+
+
+
   return (
-    <Layout>
-      {!isLoading && movieSlide.length > 0 && <HeroSlide movieSlide={movieSlide} />}
+    <Layout isReload={isReload} setIsReload={setIsReload}>
+      {/* {!isLoading && movieSlide.length > 0 && (
+        <HeroSlide movieSlide={movieSlide}/>
+      )} */}
       <div className="flex justify-center items-center mb-10 mt-20">
         <div className="rounded-lg">
           {movieTypeList.map((type: any, index: number) => (
@@ -117,7 +141,14 @@ const HomePage = () => {
               </LazyLoad>
             ))}
           </div>
-          {currentPage < totalPage && <OutlineButton className="flex my-0 mx-auto mb-20" onClick={handleLoadMore}>Load more</OutlineButton>}
+          {currentPage < totalPage && (
+            <OutlineButton
+              className="flex my-0 mx-auto mb-20"
+              onClick={handleLoadMore}
+            >
+              Load more
+            </OutlineButton>
+          )}
         </Fragment>
       )}
     </Layout>

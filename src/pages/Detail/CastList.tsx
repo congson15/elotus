@@ -11,7 +11,7 @@ const CastList = (props: any) => {
             <div
               className="bg-cover mb-2 h-[10rem]"
               style={{
-                backgroundImage: `url(https://image.tmdb.org/t/p/w500/${cast.profile_path})`,
+                backgroundImage: cast.profile_path ? `url(https://image.tmdb.org/t/p/w500/${cast.profile_path})` : `url(https://via.placeholder.com/130x160)`,
               }}
             ></div>
             <p>{cast.original_name}</p>

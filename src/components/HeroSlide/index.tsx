@@ -2,24 +2,32 @@ import React from "react";
 import SlideShow from "../SlideShow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStar } from "@fortawesome/free-solid-svg-icons";
-import moment from 'moment';
-import { Link } from "react-router-dom";
-
-
+import moment from "moment";
+import { Link, useNavigate } from "react-router-dom";
 
 const HeroSlide = (props: any) => {
-    const { movieSlide } = props;
-    return ( 
+  const [keyword, setKeyword] = React.useState("");
+  const navigate = useNavigate();
+  const handleSearchSubmit = () => {
+    navigate("search", {
+      state: {
+        keyword: keyword,
+      },
+    });
+  };
+  const { movieSlide } = props;
+  return (
     <div className="relative">
-      <div className="md:hidden absolute z-50 text-white p-3 w-full">
+      <div className="lg:hidden absolute z-50 text-white p-3 w-full">
         <div className="relative w-full">
           <input
             className="w-full h-10 px-5 bg-gray-700 opacity-70 text-sm text-white placeholder:text-white focus:outline-none"
             name="search"
             placeholder="Search...."
+            onChange={(e) => setKeyword(e.target.value)}
           />
           <img
-            onClick={() => alert("hehehe")}
+            onClick={() => handleSearchSubmit()}
             src="/svg/search.svg"
             className="absolute right-0 top-0 mt-4 mr-2"
           />
@@ -33,7 +41,7 @@ const HeroSlide = (props: any) => {
         infinite={false}
         autoplay={false}
       >
-        {movieSlide.map((movie:any, index:Number) => (
+        {movieSlide.map((movie: any, index: Number) => (
           <div
             className="relative h-[30rem] md:h-[35rem] lg:h-[55rem] cursor-pointer"
             key={movie.id}
@@ -51,11 +59,13 @@ const HeroSlide = (props: any) => {
                     NOW PLAYING
                   </span>
                 </h3>
-                <h4 className="uppercase font-semibold text-lg leading-none text-[3rem] text-white lg:text-[4.5rem]">
+                <h4 className="uppercase font-semibold text-lg leading-none text-[2rem] text-white lg:text-[4.5rem]">
                   {movie.original_title}
                 </h4>
                 <p className="block lg:mb-9 my-2 leading-normal font-normal text-gray-100">
-                  <FontAwesomeIcon color="red" icon={faStar} /> {movie.vote_average} | {moment(movie.release_date).format("DD/MM/YYYY")}
+                  <FontAwesomeIcon color="red" icon={faStar} />{" "}
+                  {movie.vote_average} |{" "}
+                  {moment(movie.release_date).format("DD/MM/YYYY")}
                 </p>
                 <p className="block my-5 text-gray-50 font-bold text-sm md:mb-5 md:text-base w-full lg:w-5/6">
                   {movie.overview}
@@ -69,7 +79,10 @@ const HeroSlide = (props: any) => {
                 </Link>
               </div>
               <div className="hidden md:flex md:flex-1 relative -top-5">
-                <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} className="h-[30rem] lg:h-[40rem] rounded-[30px]"/>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  className="h-[30rem] lg:h-[40rem] rounded-[30px]"
+                />
               </div>
             </div>
           </div>

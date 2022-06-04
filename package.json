@@ -17,6 +17,7 @@
     "@types/react-lazy-load-image-component": "^1.5.2",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
+    "jquery": "^3.6.0",
     "moment": "^2.29.3",
     "query-string": "^7.1.1",
     "react": "^18.1.0",
@@ -54,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.14",
     "@types/react-lazyload": "^3.2.0",
     "@types/react-slick": "^0.23.8",
     "autoprefixer": "^10.4.7",

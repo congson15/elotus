@@ -73,7 +73,7 @@ const Detail = () => {
                 : `url(https://via.placeholder.com/1024x750)`,
             }}
           >
-            <OutlineButton className="absolute top-4 left-5 lg:top-32" onClick={() => navigate("/")}>Back</OutlineButton>
+            <OutlineButton className="absolute top-4 left-5 lg:top-32" onClick={() => navigate(-1)}>Back</OutlineButton>
           </div>
           <div className="flex justify-start items-start relative mx-auto max-w-[1260px] -mt-[10rem] md:-mt-[15rem]">
             <div className="flex-1">
