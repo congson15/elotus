@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList, faTableCells } from "@fortawesome/free-solid-svg-icons";
 import MovieCardList from "../../components/MovieCard/List";
+import SkeletonList from "../../components/Skeleton/SkeletonList";
 
 const viewTypeList = [
   {
@@ -29,10 +30,18 @@ const SearchPage = () => {
   const [totalPage, setTotalPage] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [viewType, setViewType] = React.useState("grid_view");
+  const [isReload, setIsReload] = React.useState(false);
   const location = useLocation();
   const state: any = location.state;
 
-  const getMovies = async (type: string) => {
+  React.useEffect(() => {
+    getMovies();
+  }, []);
+  React.useEffect(() => {
+    getMovies();
+  }, [isReload]);
+
+  const getMovies = async () => {
     setLoading(true);
     const params = { pages: 1, query: state.keyword };
     try {
@@ -122,6 +131,25 @@ const SearchPage = () => {
     );
   };
 
+  const renderSkeleton = () => {
+    if (viewType === "grid_view") {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-12 mx-4 lg:mx-20">
+          {Array.from(Array(50), (x, index) => index + 1).map((index) => (
+            <CardSkeleton key={index} />
+          ))}
+        </div>
+      );
+    }
+    return (
+      <div className="grid grid-cols-1 gap-4 mb-12 mx-4 lg:mx-20">
+        {Array.from(Array(50), (x, index) => index + 1).map((index) => (
+          <SkeletonList key={index} />
+        ))}
+      </div>
+    );
+  };
+
   const handleViewTypeChange = (type: any) => {
     if (type === viewType) {
       return;
@@ -129,15 +157,14 @@ const SearchPage = () => {
     setViewType(type);
   };
 
-  React.useEffect(() => {
-    getMovies("now_playing");
-  }, []);
-
   return (
-    <Layout>
+    <Layout isReload={isReload} setIsReload={setIsReload}>
       <div className="flex justify-between mb-10 mt-20 mx-5 md:mx-20 items-center">
         <div className="flex flex-col">
-          <OutlineButton className="border-none my-5" onClick={() => navigate("/")}>
+          <OutlineButton
+            className="border-none my-5"
+            onClick={() => navigate("/")}
+          >
             Home
           </OutlineButton>
           <h3 className="text-gray-300">
@@ -165,13 +192,7 @@ const SearchPage = () => {
           ))}
         </div>
       </div>
-      {isLoading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-12 mx-4 lg:mx-20">
-          {Array.from(Array(50), (x, index) => index + 1).map((index) => (
-            <CardSkeleton key={index} />
-          ))}
-        </div>
-      )}
+      {isLoading && renderSkeleton()}
       {!isLoading && renderMovieList()}
     </Layout>
   );

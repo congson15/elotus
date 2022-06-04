@@ -22,7 +22,9 @@ const Header = (props: any) => {
   return (
     <Fragment>
       <div
-        className={`flex items-center justify-center space-x-2 animate-pulse pt-5 ${isDrag ? 'block' : 'hidden'}`}
+        className={`flex items-center justify-center space-x-2 animate-pulse pt-5 ${
+          isDrag ? "block" : "hidden"
+        }`}
       >
         <div className="w-6 h-6 bg-red-500 rounded-full animate-bounce"></div>
         <div className="w-6 h-6 bg-red-500 rounded-full animate-bounce"></div>
