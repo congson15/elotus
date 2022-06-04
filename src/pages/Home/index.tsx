@@ -95,9 +95,9 @@ const HomePage = () => {
 
   return (
     <Layout isReload={isReload} setIsReload={setIsReload}>
-      {/* {!isLoading && movieSlide.length > 0 && (
+      {!isLoading && movieSlide.length > 0 && (
         <HeroSlide movieSlide={movieSlide}/>
-      )} */}
+      )}
       <div className="flex justify-center items-center mb-10 mt-20">
         <div className="rounded-lg">
           {movieTypeList.map((type: any, index: number) => (
